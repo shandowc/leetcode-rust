@@ -54,32 +54,7 @@ use crate::util::linked_list::{to_list, ListNode};
 //   }
 // }
 impl Solution {
-    fn add_two_numbers_recursive(
-        l1: Option<&Box<ListNode>>,
-        l2: Option<&Box<ListNode>>,
-        progres: i32,
-    ) -> Option<Box<ListNode>> {
-        if l1.is_none() && l2.is_none() {
-            if progres > 0 {
-                return Some(Box::new(ListNode::new(progres)));
-            }
-            return None;
-        }
-        let mut res = l1.map_or(0, |no| no.val) + l2.map_or(0, |no| no.val) + progres;
-        let progres = res / 10;
-        res = res % 10;
-
-        return Some(Box::new(ListNode {
-            val: res,
-            next: Self::add_two_numbers_recursive(
-                l1.map_or(None, |no| no.next.as_ref()),
-                l2.map_or(None, |no| no.next.as_ref()),
-                progres,
-            ),
-        }));
-    }
-
-    pub fn add_two_numbers_recursive_loop(
+    pub fn add_two_numbers(
         l1: Option<Box<ListNode>>,
         l2: Option<Box<ListNode>>,
     ) -> Option<Box<ListNode>> {
@@ -100,22 +75,13 @@ impl Solution {
             progress = res / 10;
             res = res % 10;
 
-            let mut node = Box::new(ListNode::new(res));
-            parent.next = Some(Box::clone(&node));
+            parent.next = Some(Box::new(ListNode::new(res)));
 
             p1 = p1.map_or(None, |node| node.next);
             p2 = p2.map_or(None, |node| node.next);
 
-            parent = &mut node;
+            parent = parent.next.as_mut().unwrap();
         }
-    }
-
-    pub fn add_two_numbers(
-        l1: Option<Box<ListNode>>,
-        l2: Option<Box<ListNode>>,
-    ) -> Option<Box<ListNode>> {
-        Self::add_two_numbers_recursive_loop(l1, l2)
-        // Self::add_two_numbers_recursive(l1.as_ref(), l2.as_ref(), 0)
     }
 }
 
