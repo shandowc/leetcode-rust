@@ -75,7 +75,6 @@ pub struct Solution {}
 impl Solution {
     pub fn my_atoi(s: String) -> i32 {
         let mut start = false;
-        let mut is_first_none_zero = true;
         let mut sig = 1;
         let mut res = 0i32;
         for c in s.chars() {
@@ -91,7 +90,9 @@ impl Solution {
                     }
                     start = true;
                     continue;
-                } 
+                } else {
+                    break;
+                }
             } else {
                 if !c.is_digit(10) {
                     break;
@@ -99,11 +100,12 @@ impl Solution {
                 if res.checked_mul(10).is_none() {
                     return if sig > 0 { std::i32::MAX } else { std::i32::MIN };
                 }
-                res = res * 10 + c.to_digit(10).unwrap() as i32;
-                if is_first_none_zero && res != 0 {
-                    res = res * sig;
-                    is_first_none_zero = false;
+                res = res * 10;
+                let x = c.to_digit(10).unwrap() as i32 * sig;
+                if res.checked_add(x).is_none() {
+                    return if sig > 0 { std::i32::MAX } else { std::i32::MIN };
                 }
+                res = res + x;
             }
         }
         res
@@ -125,5 +127,6 @@ mod tests {
         assert_eq!(Solution::my_atoi("   -10".to_string()), -10);
         assert_eq!(Solution::my_atoi("    10".to_string()), 10);
         assert_eq!(Solution::my_atoi("  10  ".to_string()), 10);
+        assert_eq!(Solution::my_atoi("  -42".to_string()), -42);
     }
 }
