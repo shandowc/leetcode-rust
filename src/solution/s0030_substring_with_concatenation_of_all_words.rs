@@ -60,7 +60,7 @@ impl Solution {
         sorted_words.sort();
 
         let mut res = vec![];
-        for i in 0..s.len() - substr_len {
+        for i in 0..=s.len() - substr_len {
             let mut tmp_list = vec![];
             let substr = &s[i..i + substr_len];
             for j in (0..substr_len).step_by(word_len) {

@@ -44,17 +44,25 @@ pub struct Solution {}
 // submission codes start here
 
 impl Solution {
+    fn get_nearest_larger_idx(nums: &Vec<i32>, from: usize, end: usize, target: i32) -> usize {
+        let mut res = from;
+        for j in from..=end {
+            if target > nums[j] {
+                return res;
+            } else if target < nums[j] {
+                res = j;
+            }
+        }
+        res
+    }
+
     pub fn next_permutation(nums: &mut Vec<i32>) {
-        let num_len = nums.len();
-        let mut max_idx = num_len - 1;
-        let mut max = nums[max_idx];
-        for i in (0..num_len-1).rev() {
-            if nums[i] >= max {
-                max_idx = i;
-                max = nums[i];
-            } else {
-                nums.swap(i, max_idx);
-                nums[i..num_len-1].sort();
+        let last_idx = nums.len() - 1;
+        for i in (0..last_idx).rev() {
+            if nums[i] < nums[i+1] {
+                let mut nearest_idx = Self::get_nearest_larger_idx(nums, i+1, last_idx, nums[i]);
+                nums.swap(i, nearest_idx);
+                nums[i+1..].sort();
                 return;
             }
         }
@@ -82,8 +90,12 @@ mod tests {
         Solution::next_permutation(&mut nums);
         assert_eq!(nums, vec![1, 5, 1]);
 
-        let mut nums = vec![8, 8, 4, 4];
+        let mut nums = vec![1, 3, 2];
         Solution::next_permutation(&mut nums);
-        assert_eq!(nums, vec![4, 4, 8, 8]);
+        assert_eq!(nums, vec![2, 1, 3]);
+
+        let mut nums = vec![1, 5, 1];
+        Solution::next_permutation(&mut nums);
+        assert_eq!(nums, vec![5, 1, 1]);
     }
 }
