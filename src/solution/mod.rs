@@ -27,3 +27,4 @@ mod s0028_find_the_index_of_the_first_occurrence_in_a_string;
 mod s0029_divide_two_integers;
 mod s0030_substring_with_concatenation_of_all_words;
 mod s0031_next_permutation;
+mod s0032_longest_valid_parentheses;
