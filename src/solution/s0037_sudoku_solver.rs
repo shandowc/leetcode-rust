@@ -94,14 +94,15 @@ impl Solution {
                         break;
                     }
                     if !found {
-                        (i, sc) = stack.pop().unwrap();
-                        let (m, n) = (i/9, i%9);
+                        let (mut ni, mut nc) = stack.pop().unwrap();
+                        let (m, n) = (ni/9, ni%9);
                         let blk_idx = m / 3 * 3 + n / 3;
                         board[m][n] = '.';
-                        rows[m].remove(&sc);
-                        cols[n].remove(&sc);
-                        blks[blk_idx].remove(&sc);
-                        sc = (sc as u8 + 1) as char;
+                        rows[m].remove(&nc);
+                        cols[n].remove(&nc);
+                        blks[blk_idx].remove(&nc);
+                        sc = (nc as u8 + 1) as char;
+                        i = ni;
                         continue 'outer;
                     }
                 },
